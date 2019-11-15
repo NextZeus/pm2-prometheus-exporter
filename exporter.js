@@ -130,12 +130,10 @@ function exporter() {
     }
   });
 
-  const conf = io.initModule();
-  const port = conf.port || process.env.PORT || 9209;
-  const host = conf.host || '0.0.0.0';
+  const port = process.env.PORT || 9209;
 
-  server.listen(port, host);
-  logger.info('pm2-prometheus-exporter listening at %s:%s', host, port);
+  server.listen(port);
+  logger.info('pm2-prometheus-exporter listening at %s', port);
 }
 
 exporter();

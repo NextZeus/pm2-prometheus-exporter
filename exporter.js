@@ -131,7 +131,7 @@ function exporter() {
   });
 
   const conf = io.initModule();
-  const port = conf.port || 9209;
+  const port = conf.port || process.env.PORT || 9209;
   const host = conf.host || '0.0.0.0';
 
   server.listen(port, host);

@@ -1,17 +1,17 @@
 module.exports = {
   apps : [{
-    name: 'PM2 Exporter',
+    name: 'pm2-metrics',
     script: 'exporter.js',
+    exec_mode: 'cluster',
     instances: 1,
     autorestart: true,
     watch: false,
     max_memory_restart: '1G',
+    error: `/data/logs/pm2-metrics-error.log`,
+    log: `/data/logs/pm2-metrics-all.log`,
+    output: '/dev/null',
+    merge_logs: true,
     env: {
-      NODE_ENV: 'development',
-      PORT: 9209
-    },
-    env_production: {
-      NODE_ENV: 'production',
       PORT: 9209
     }
   }]

@@ -49,9 +49,9 @@
   },
   "homepage": "https://github.com/nextzeus/pm2-prometheus-exporter#readme",
   "scripts": {
-    "build_image": "docker build -t nextzeus/pm2-prometheus-exporter -t latest .",
+    "build_image": "docker build -t nextzeus/pm2-prometheus-exporter:latest .",
     "push_image": "docker push nextzeus/pm2-prometheus-exporter:latest",
-    "run_image": "docker run -p 9209:9209 --name=pm2-prometheus-exporter -d nextzeus/pm2-prometheus-exporter",
-    "start": "npm install --production && pm2 startOrGracefulReload ./ecosystem.config.js --update-env"
+    "run_image": "docker run -p 9209:9209 --name=pm2-exporter -d nextzeus/pm2-prometheus-exporter:latest",
+    "start": "npm install --production && pm2-runtime start ./ecosystem.config.js"
   }
 }

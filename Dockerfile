@@ -1,11 +1,12 @@
-FROM keymetrics/pm2:latest-slim
+FROM keymetrics/pm2:latest-alpine
 
 # Bundle APP files
-COPY . .
+COPY ./src/exporter.js /data/work/exporter.js
+COPY ./ecosystem.config.js /data/work/ecosystem.config.js
+COPY ./package.json /data/work/package.json
 
 # Show current folder structure in logs
-RUN ls -al -R
-RUN pwd
+WORKDIR /data/work
 
 EXPOSE 9209
 CMD [ "npm", "run", "start"]

@@ -3,7 +3,6 @@
   "version": "1.0.26",
   "description": "Produces Metrics of Pm2 of running instances.little updated version of https://github.com/burningtree/pm2-prometheus-exporter, any PR is appriciated.",
   "dependencies": {
-    "@pm2/io": "^4.1.4",
     "pino": "^5.12.0",
     "pm2": "^3.3.1",
     "prom-client": "^11.2.1"
@@ -27,7 +26,7 @@
   "main": "exporter.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saikatharryc/pm2-prometheus-exporter.git"
+    "url": "git+https://github.com/nextzeus/pm2-prometheus-exporter.git"
   },
   "keywords": [
     "pm2",
@@ -35,20 +34,10 @@
     "metrics",
     "pmx"
   ],
-  "author": "Jan Stránský <jan.stransky@arnal.cz>",
-  "contributor": [
-    {
-      "name": "Saikat Chakrabortty <@saikatharryc>",
-      "email": "saikatchakrabortty2@gmail.com",
-      "url": ""
-    }
-  ],
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/saikatharryc/pm2-prometheus-exporter/issues"
-  },
-  "homepage": "https://github.com/nextzeus/pm2-prometheus-exporter#readme",
   "scripts": {
+    "setup": "pm2 deploy production setup",
+    "deploy": "pm2 deploy production",
     "build_image": "docker build -t nextzeus/pm2-prometheus-exporter:latest .",
     "push_image": "docker push nextzeus/pm2-prometheus-exporter:latest",
     "run_image": "docker run -p 9209:9209 --name=pm2-exporter -d nextzeus/pm2-prometheus-exporter:latest",

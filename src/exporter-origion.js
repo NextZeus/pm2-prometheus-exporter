@@ -1,3 +1,5 @@
+// @ts-check
+
 const http = require('http');
 const prom = require('prom-client');
 const pm2 = require('pm2');
@@ -5,7 +7,7 @@ const logger = require('pino')();
 const moment = require('moment');
 
 const prefix = 'pm2';
-const labels = ['id', 'name', 'version', 'mode', 'pid', 'status', 'restart', 'uptime', 'cpu', 'memory', 'user', 'watching', 'instance', 'interpreter', 'node_version', 'hostname'];
+const labels = ['id', 'name','version','mode','pid','status','restart','uptime','cpu','memory','user','watching', 'instance', 'interpreter', 'node_version'];
 const map = [
   ['up', 'Is the process running'],
   ['cpu', 'Process cpu usage'],
@@ -39,6 +41,7 @@ function metrics() {
   return pm2c('list')
     .then(list => {
       list.forEach(p => {
+        // logger.debug(p, p.exec_interpreter, '>>>>>>');
         const conf = {
           id: p.pm_id,
           name: p.name,
@@ -55,7 +58,6 @@ function metrics() {
           instance: p.pm2_env.NODE_APP_INSTANCE,
           interpreter: p.pm2_env.exec_interpreter,
           node_version: p.pm2_env.node_version,
-          hostname: require('os').hostname(),
         };
 
         const values = {
@@ -109,6 +111,8 @@ function metrics() {
         Object.keys(values).forEach(k => {
           if (values[k] === null) return null;
 
+          // Prometheus client Gauge will throw an error if we don't return a number
+          // so we will skip this metrics value
           if (values[k] === undefined) {
             return null;
           }

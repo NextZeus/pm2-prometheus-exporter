@@ -1,13 +1,14 @@
 // @ts-check
-
+// https://github.com/saikatharryc/pm2-prometheus-exporter/blob/master/exporter.js
 const http = require('http');
 const prom = require('prom-client');
 const pm2 = require('pm2');
-const logger = require('pino')();
-const moment = require('moment');
+const logger = require('pino')()
+
+const io = require('@pm2/io');
 
 const prefix = 'pm2';
-const labels = ['id', 'name','version','mode','pid','status','restart','uptime','cpu','memory','user','watching', 'instance', 'interpreter', 'node_version'];
+const labels = ['id', 'name', 'instance', 'interpreter', 'node_version'];
 const map = [
   ['up', 'Is the process running'],
   ['cpu', 'Process cpu usage'],
@@ -41,20 +42,10 @@ function metrics() {
   return pm2c('list')
     .then(list => {
       list.forEach(p => {
-        // logger.debug(p, p.exec_interpreter, '>>>>>>');
+        logger.debug(p, p.exec_interpreter, '>>>>>>');
         const conf = {
           id: p.pm_id,
           name: p.name,
-          version: p.pm2_env.version,
-          mode: p.pm2_env.exec_mode,
-          pid: p.pid,
-          status: p.pm2_env.status,
-          restart: p.pm2_env.restart_time,
-          uptime: moment().from(moment(p.pm2_env.pm_uptime)),
-          cpu: p.monit.cpu,
-          memory: Math.ceil(p.monit.memory / 1024 / 1024) + 'M',
-          user: p.pm2_env.username,
-          watching: p.pm2_env.watch,
           instance: p.pm2_env.NODE_APP_INSTANCE,
           interpreter: p.pm2_env.exec_interpreter,
           node_version: p.pm2_env.node_version,
@@ -139,10 +130,12 @@ function exporter() {
     }
   });
 
-  const port = process.env.PORT || 9209;
+  const conf = io.initModule();
+  const port = conf.port || 9209;
+  const host = conf.host || '0.0.0.0';
 
-  server.listen(port);
-  logger.info('pm2-prometheus-exporter listening at %s', port);
+  server.listen(port, host);
+  logger.info('pm2-prometheus-exporter listening at %s:%s', host, port);
 }
 
 exporter();

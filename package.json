@@ -43,6 +43,6 @@
     "push_image": "docker push nextzeus/pm2-prometheus-exporter:latest",
     "run_image": "docker run -p 9209:9209 --name=pm2-exporter -d nextzeus/pm2-prometheus-exporter:latest",
     "start": "npm install --production && pm2-runtime start ./ecosystem.config.js",
-    "start_": "npm install --production && pm2 start ./ecosystem.config.js"
+    "start:local": "npm install --production && pm2 startOrGracefulReload ./ecosystem.config.js --only pm2-metrics-local --update-env --env stage"
   }
 }

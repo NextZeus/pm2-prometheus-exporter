@@ -69,6 +69,7 @@ function metrics() {
         };
 
         const names = Object.keys(p.pm2_env.axm_monitor);
+        logger.info({ names });
 
         for (let index = 0; index < names.length; index++) {
           const name = names[index];
@@ -90,8 +91,10 @@ function metrics() {
             }
 
             const metricName = prefix + '_' + name.replace(/[^A-Z0-9]+/gi, '_').toLowerCase();
+            logger.info({ metricName, value });
 
             if (!pm[metricName]) {
+              logger.warn(`${metricName} new Gauge`);
               pm[metricName] = new prom.Gauge({
                 name: metricName,
                 help: name,
@@ -113,9 +116,12 @@ function metrics() {
             return null;
           }
 
+          logger.info(`${k} set`);
           pm[k].set(conf, values[k]);
         });
       });
+
+      logger.info({ data: registry.metrics() });
       return registry.metrics()
     })
     .catch(err => {

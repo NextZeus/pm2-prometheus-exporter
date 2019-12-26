@@ -15,8 +15,7 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
-    "id": 2,
-    "iteration": 1575949749415,
+    "id": 1,
     "links": [],
     "panels": [
         {
@@ -336,5 +335,5 @@
     "timezone": "",
     "title": "服务器PM2-List进程监控",
     "uid": "l66htQGWz",
-    "version": 13
+    "version": 1
 }
